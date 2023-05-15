@@ -1,0 +1,42 @@
+{
+  "name": "regov",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "start:dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "test": "jest --verbose ./src",
+    "test:cov": "jest --coverage"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/chai-as-promised": "^7.1.2",
+    "body-parser": "^1.20.1",
+    "chai-as-promised": "^7.1.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jest": "^27.5.1",
+    "mongoose": "^6.7.1",
+    "sinon": "^14.0.2",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.9.1",
+    "ts-sinon": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.4",
+    "@types/chai-spies": "^1.0.1",
+    "@types/express": "^4.17.14",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^18.11.9",
+    "chai": "^4.2.0",
+    "chai-spies": "^1.0.0",
+    "concurrently": "^7.5.0",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.8.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
