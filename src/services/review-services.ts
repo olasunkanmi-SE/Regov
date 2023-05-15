@@ -17,7 +17,8 @@ export class ReviewService {
         event,
       });
     }
-    return review;
+    const createdReview = await review.save();
+    return createdReview;
   }
 
   static async getReviews() {
