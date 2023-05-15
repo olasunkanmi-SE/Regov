@@ -1,8 +1,8 @@
+import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
 import { CreateUserDTO } from "../interfaces/create-user-interface";
 
 interface IUserError {
   body?: string;
-  invalidEmail?: string;
   email?: string;
   password?: string;
 }
@@ -19,8 +19,8 @@ export class RequestValidation {
       return error;
     }
     Object.entries(prop).forEach(([key, value]) => {
-      if (key === "email" && !RequestValidation.isEmail(key)) {
-        error.invalidEmail = "Provide a valid email";
+      if (key === "email" && !RequestValidation.isEmail(value)) {
+        error.email = "Provide a valid email";
       }
       if (key === "password" && value.length < 8) {
         error.password = "Password length must be greater than 7";
@@ -30,5 +30,21 @@ export class RequestValidation {
       }
     });
     return error;
+  }
+
+  static createAPIResponse(
+    success: boolean,
+    code: number,
+    message: string,
+    data: any,
+    request: { type: string; url: string }
+  ) {
+    return {
+      success,
+      code,
+      message,
+      data,
+      request,
+    };
   }
 }
