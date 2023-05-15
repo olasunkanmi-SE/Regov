@@ -1,7 +1,6 @@
 import { HydratedDocument, ObjectId } from "mongoose";
 import { HttpException } from "../exceptions/exception";
 import { IUser, User } from "../models";
-import { ICreateUserDTO } from "../interfaces/create-user-interface";
 import { RequestValidation } from "../utility/request-validator";
 import * as bcrypt from "bcrypt";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
@@ -12,7 +11,7 @@ export class UserService {
     return user ? true : false;
   }
 
-  static async create(props: ICreateUserDTO) {
+  static async create(props: IUser) {
     const { email, password } = props;
     const userExists = await UserService.checkIfUserExists(email);
     if (userExists) {
@@ -27,7 +26,7 @@ export class UserService {
     return createdUser;
   }
 
-  static async authenticateUser(props: ICreateUserDTO) {
+  static async authenticateUser(props: IUser) {
     const { email, password } = props;
     const validateEmail = RequestValidation.isEmail(email);
     if (!validateEmail) {
