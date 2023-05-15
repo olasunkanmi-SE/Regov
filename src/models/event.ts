@@ -1,19 +1,28 @@
 import { model, Schema } from "mongoose";
 
+enum eventType {
+  POST = "post",
+  DRAFT = "draft",
+}
 export interface IEvent {
   title: string;
   content: string;
-  rating?: number;
+  ratings?: number[];
+  type: eventType;
 }
 const eventSchema = new Schema<IEvent>({
   content: {
     type: String,
     required: true,
   },
-  rating: {
-    type: Number,
+  ratings: {
+    type: [Number],
   },
   title: {
+    type: String,
+    required: true,
+  },
+  type: {
     type: String,
     required: true,
   },

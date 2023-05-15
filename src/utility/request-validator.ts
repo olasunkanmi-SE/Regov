@@ -1,10 +1,12 @@
-import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
-import { CreateUserDTO } from "../interfaces/create-user-interface";
+import { IEvent, IUser } from "../models";
 
 interface IUserError {
   body?: string;
   email?: string;
   password?: string;
+  title?: string;
+  content?: string;
+  type?: string;
 }
 export class RequestValidation {
   static isEmail(prop: string): boolean {
@@ -12,7 +14,7 @@ export class RequestValidation {
     return prop.match(regex) ? true : false;
   }
 
-  static validUserRequest(prop: CreateUserDTO): IUserError {
+  static validUserRequest(prop: IUser): IUserError {
     let error: IUserError = {};
     if (!Object.keys(prop).length) {
       error.body = "The request body cannot be empty";
@@ -46,5 +48,24 @@ export class RequestValidation {
       data,
       request,
     };
+  }
+
+  static validateEventRequest(props: IEvent) {
+    let error: IUserError = {};
+    Object.entries(props).forEach(([value, key]) => {
+      if (!value) {
+        error.body = `${key} is required`;
+      }
+      if (value === "title" && value.length < 5) {
+        error.title = "title is too short";
+      }
+      if (key === "type" && (value !== "post" || "draft")) {
+        error.type = "event type should either be post or draft";
+      }
+      if (key === "content" && value.length < 10) {
+        error.content = "content is too short";
+      }
+    });
+    return error;
   }
 }
