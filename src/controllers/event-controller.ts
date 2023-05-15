@@ -13,6 +13,7 @@ export class EventController {
 
   initRoutes() {
     this.router.post(this.path, this.createEvent);
+    this.router.get(this.path, this.getEvents);
   }
 
   async createEvent(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -30,5 +31,25 @@ export class EventController {
         })
       );
     } catch (error) {}
+  }
+
+  async getEvents(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      const events = await EventService.getEvents();
+      return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
+        RequestValidation.createAPIResponse(
+          true,
+          HTTP_RESPONSE_CODE.SUCCESS,
+          APP_ERROR_MESSAGE.eventsReturned,
+          events,
+          {
+            type: "GET",
+            url: `http://localhost:3000/api/reviews`,
+          }
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
   }
 }

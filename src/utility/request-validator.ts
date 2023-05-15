@@ -1,12 +1,13 @@
 import { IEvent, IUser } from "../models";
 
-interface IUserError {
+interface IError {
   body?: string;
   email?: string;
   password?: string;
   title?: string;
   content?: string;
   type?: string;
+  reviewContent?: string;
 }
 export class RequestValidation {
   static isEmail(prop: string): boolean {
@@ -14,8 +15,8 @@ export class RequestValidation {
     return prop.match(regex) ? true : false;
   }
 
-  static validUserRequest(prop: IUser): IUserError {
-    let error: IUserError = {};
+  static validUserRequest(prop: IUser): IError {
+    let error: IError = {};
     if (!Object.keys(prop).length) {
       error.body = "The request body cannot be empty";
       return error;
@@ -51,7 +52,7 @@ export class RequestValidation {
   }
 
   static validateEventRequest(props: IEvent) {
-    let error: IUserError = {};
+    let error: IError = {};
     Object.entries(props).forEach(([value, key]) => {
       if (!value) {
         error.body = `${key} is required`;
@@ -66,6 +67,17 @@ export class RequestValidation {
         error.content = "content is too short";
       }
     });
+    return error;
+  }
+
+  static validateReviewRequest(props: IEvent) {
+    let error: IError = {};
+    if (!props.content) {
+      error.reviewContent = "content is required";
+    }
+    if (props.content && props.content.length < 5) {
+      error.reviewContent = "content is too short";
+    }
     return error;
   }
 }

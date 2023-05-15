@@ -50,4 +50,9 @@ export class UserService {
     }
     return user;
   }
+
+  static async getUsers() {
+    const users = await User.find();
+    return users;
+  }
 }
