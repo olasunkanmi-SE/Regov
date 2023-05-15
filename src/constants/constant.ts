@@ -19,6 +19,7 @@ export const enum HttpStatusCode {
 export const APP_ERROR_MESSAGE = {
   serverError: "Something went wrong, try again later",
   createdUser: "User created successfully",
+  eventCreated: "Event created successfully",
   userAuthenticated: "User Authenticated successfully",
   userReturned: "User Returned successfully",
   userDoesntExist: "User does not exist",
