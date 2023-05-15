@@ -13,7 +13,6 @@ export class UserService {
 
   static async create(props: CreateUserDTO) {
     const { email, password } = props;
-    RequestValidation.validUserRequest(props);
     const userExists = await UserService.checkIfUserExists(email);
     if (userExists) {
       throw new HttpException(400, "user already exists");
@@ -27,5 +26,20 @@ export class UserService {
     return createdUser;
   }
 
-  static authenticateUser() {}
+  static async authenticateUser(props: CreateUserDTO) {
+    const { email, password } = props;
+    const validateEmail = RequestValidation.isEmail(email);
+    if (!validateEmail) {
+      throw new HttpException(HTTP_RESPONSE_CODE.BAD_REQUEST, "Enter a valid email address");
+    }
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, "Invalid user email or password");
+    }
+    const validatePassword = await bcrypt.compare(password, user.password);
+    if (!validatePassword) {
+      throw new HttpException(HTTP_RESPONSE_CODE.BAD_REQUEST, "Enter a valid email address");
+    }
+    return user;
+  }
 }

@@ -2,13 +2,16 @@ import express from "express";
 import * as bodyParser from "body-parser";
 import mongoose from "mongoose";
 import errorMiddleware from "./middlewares/error.middleware";
+import session from "express-session";
 export class App {
   public app: express.Application;
   public port: number;
+  public sessionSecret: string;
 
-  constructor(controllers: unknown, port: number) {
+  constructor(controllers: unknown, port: number, sessionSecret: string) {
     this.app = express();
     this.port = port;
+    this.sessionSecret = sessionSecret;
     this.connectDB();
     this.initMiddleWares();
     this.initControllers(controllers);
@@ -31,6 +34,13 @@ export class App {
 
   private initMiddleWares() {
     this.app.use(bodyParser.json());
+    this.app.use(
+      session({
+        secret: this.sessionSecret,
+        resave: false,
+        saveUninitialized: true,
+      })
+    );
   }
 
   private intializeErrorHandling() {
