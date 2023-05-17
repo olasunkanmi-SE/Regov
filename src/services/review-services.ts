@@ -23,9 +23,6 @@ export class ReviewService {
           existingEvent.ratings.push(rate);
           await EventService.updateEvent(event, {
             ratings: existingEvent.ratings,
-            title: existingEvent.title,
-            content: existingEvent.content,
-            type: existingEvent.type,
           });
           review = promises[1];
         }

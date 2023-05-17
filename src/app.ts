@@ -34,13 +34,6 @@ export class App {
 
   private initMiddleWares() {
     this.app.use(bodyParser.json());
-    this.app.use(
-      session({
-        secret: this.sessionSecret,
-        resave: false,
-        saveUninitialized: true,
-      })
-    );
   }
 
   private intializeErrorHandling() {

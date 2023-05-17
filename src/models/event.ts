@@ -8,6 +8,7 @@ export interface IEvent {
   title: string;
   content: string;
   ratings?: number[];
+  rate?: number;
   type: eventType;
 }
 const eventSchema = new Schema<IEvent>({
@@ -25,6 +26,9 @@ const eventSchema = new Schema<IEvent>({
   type: {
     type: String,
     required: true,
+  },
+  rate: {
+    type: Number,
   },
 });
 export const Event = model("Event", eventSchema);

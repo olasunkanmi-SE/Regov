@@ -38,16 +38,17 @@ export class EventService {
     return [averageRating, eventRatings];
   }
 
-  static async updateEvent(id: string, props: IEvent) {
+  static async updateEvent(id: string, props: Partial<IEvent>) {
     const event = await EventService.getEvent(id);
-    Object.entries(props).forEach(([key, value]) => {
-      if (key === "content") {
-        event.content = value;
-      }
-      if (key === "ratings") {
-        event.ratings = value;
-      }
-    });
+    if (Object.hasOwnProperty.call(props, "content")) {
+      event.content = props.content;
+    }
+    if (Object.hasOwnProperty.call(props, "ratings")) {
+      event.ratings = props.ratings;
+    }
+    if (Object.hasOwnProperty.call(props, "rate")) {
+      event.rate = props.rate;
+    }
     await event.save();
   }
 }
