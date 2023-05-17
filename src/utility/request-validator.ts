@@ -1,12 +1,15 @@
 import { IEvent, IUser } from "../models";
 
-interface IUserError {
+interface IError {
   body?: string;
   email?: string;
   password?: string;
   title?: string;
   content?: string;
   type?: string;
+  reviewContent?: string;
+  user?: string;
+  rate?: string;
 }
 export class RequestValidation {
   static isEmail(prop: string): boolean {
@@ -14,8 +17,8 @@ export class RequestValidation {
     return prop.match(regex) ? true : false;
   }
 
-  static validUserRequest(prop: IUser): IUserError {
-    let error: IUserError = {};
+  static validUserRequest(prop: IUser): IError {
+    let error: IError = {};
     if (!Object.keys(prop).length) {
       error.body = "The request body cannot be empty";
       return error;
@@ -51,7 +54,7 @@ export class RequestValidation {
   }
 
   static validateEventRequest(props: IEvent) {
-    let error: IUserError = {};
+    let error: IError = {};
     Object.entries(props).forEach(([value, key]) => {
       if (!value) {
         error.body = `${key} is required`;
@@ -66,6 +69,31 @@ export class RequestValidation {
         error.content = "content is too short";
       }
     });
+    return error;
+  }
+
+  static validateReviewRequest(props: IEvent) {
+    let error: IError = {};
+    Object.entries(props).forEach(([key, value]) => {
+      if (key === "content") {
+        if (!value.length) {
+          error.reviewContent = "content is required";
+        }
+        if (value.length < 5) {
+          error.reviewContent = "content is too short";
+        }
+      }
+      if (key === "user" && !value.length) {
+        error.user = "userId is required";
+      }
+      if (key === "event" && !value.length) {
+        error.user = "eventId is required";
+      }
+      if (key === "rate" && Number(value) > 5) {
+        error.rate = "Rate should be lesser than or equal to 5";
+      }
+    });
+
     return error;
   }
 }

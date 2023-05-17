@@ -13,6 +13,8 @@ export class UserController {
 
   initRoutes() {
     this.router.post(this.path, this.createUser);
+    this.router.get(this.path, this.getUsers);
+    this.router.get(this.path + "/user", this.getUser);
     this.router.post(this.path + "/authenticate", this.authenticateUser);
   }
 
@@ -58,12 +60,26 @@ export class UserController {
 
   async getUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
-      const id = req.params.id;
-      const user = await UserService.getUser(id);
+      const id = req.query.id;
+      const user = await UserService.getUser(id.toString());
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(true, HTTP_RESPONSE_CODE.SUCCESS, APP_ERROR_MESSAGE.userReturned, user, {
           type: "POST",
           url: `http://localhost:3000/api/users/${id}`,
+        })
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getUsers(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      const users = await UserService.getUsers();
+      return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
+        RequestValidation.createAPIResponse(true, HTTP_RESPONSE_CODE.SUCCESS, APP_ERROR_MESSAGE.usersReturned, users, {
+          type: "GET",
+          url: `http://localhost:3000/api/users`,
         })
       );
     } catch (error) {
