@@ -19,17 +19,18 @@ export class ReviewController {
       const content = req.body.content;
       const user = req.query.user.toString();
       const event = req.query.event.toString();
+      const rate = req.body.rate;
       const error = RequestValidation.validateReviewRequest(req.body);
       if (Object.keys(error).length) {
         return res.status(HTTP_RESPONSE_CODE.BAD_REQUEST).json({ error });
       }
-      const review = await ReviewService.create({ content, user, event });
+      const review = await ReviewService.create({ content, user, event, rate });
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(
           true,
           HTTP_RESPONSE_CODE.SUCCESS,
           APP_ERROR_MESSAGE.reviewCreated,
-          { _id: review._id, content: review.content },
+          { _id: review._id, content: review.content, rate: review.rate },
           {
             type: "POST",
             url: "http://localhost:3000/api/reviews",
@@ -46,6 +47,7 @@ export class ReviewController {
         return {
           _id: review._id,
           content: review.content,
+          rate: review.rate,
         };
       });
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(

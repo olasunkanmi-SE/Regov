@@ -8,6 +8,8 @@ interface IError {
   content?: string;
   type?: string;
   reviewContent?: string;
+  user?: string;
+  rate?: string;
 }
 export class RequestValidation {
   static isEmail(prop: string): boolean {
@@ -72,12 +74,26 @@ export class RequestValidation {
 
   static validateReviewRequest(props: IEvent) {
     let error: IError = {};
-    if (!props.content) {
-      error.reviewContent = "content is required";
-    }
-    if (props.content && props.content.length < 5) {
-      error.reviewContent = "content is too short";
-    }
+    Object.entries(props).forEach(([key, value]) => {
+      if (key === "content") {
+        if (!value.length) {
+          error.reviewContent = "content is required";
+        }
+        if (value.length < 5) {
+          error.reviewContent = "content is too short";
+        }
+      }
+      if (key === "user" && !value.length) {
+        error.user = "userId is required";
+      }
+      if (key === "event" && !value.length) {
+        error.user = "eventId is required";
+      }
+      if (key === "rate" && Number(value) > 5) {
+        error.rate = "Rate should be lesser than or equal to 5";
+      }
+    });
+
     return error;
   }
 }

@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-enum eventType {
+export enum eventType {
   POST = "post",
   DRAFT = "draft",
 }

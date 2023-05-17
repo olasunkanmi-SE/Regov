@@ -4,6 +4,7 @@ export interface IReview {
   content: string;
   user: Types.ObjectId;
   event: Types.ObjectId;
+  rate?: number;
 }
 const reviewSchema = new Schema<IReview>({
   content: {
@@ -19,6 +20,9 @@ const reviewSchema = new Schema<IReview>({
     type: Schema.Types.ObjectId,
     required: true,
     ref: "Event",
+  },
+  rate: {
+    type: Number,
   },
 });
 export const Review = model("Review", reviewSchema);
