@@ -3,6 +3,7 @@ import { RequestValidation } from "../utility/request-validator";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
 import { EventService } from "../services";
 import { IEvent } from "../models";
+import { authenticate } from "../middlewares/auth-middleware";
 
 export class EventController {
   path = "/events";
@@ -12,7 +13,7 @@ export class EventController {
   }
 
   initRoutes() {
-    this.router.post(this.path, this.createEvent);
+    this.router.post(this.path, authenticate, this.createEvent);
     this.router.get(this.path, this.getEvents);
   }
 

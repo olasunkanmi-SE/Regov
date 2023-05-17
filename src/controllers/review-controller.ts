@@ -2,6 +2,7 @@ import * as express from "express";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
 import { RequestValidation } from "../utility/request-validator";
 import { ReviewService } from "../services/review-services";
+import { authenticate } from "../middlewares/auth-middleware";
 export class ReviewController {
   path = "/reviews";
   router = express.Router();
@@ -10,7 +11,7 @@ export class ReviewController {
   }
 
   initRoutes() {
-    this.router.post(this.path, this.createReview);
+    this.router.post(this.path, authenticate, this.createReview);
     this.router.get(this.path, this.getReviews);
   }
 

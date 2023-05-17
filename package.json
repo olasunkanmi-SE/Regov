@@ -37,6 +37,7 @@
     "@types/express": "^4.17.14",
     "@types/express-session": "^1.17.7",
     "@types/jest": "^27.4.1",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^18.11.9",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",

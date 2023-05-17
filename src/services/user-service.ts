@@ -4,7 +4,7 @@ import { IUser, User } from "../models";
 import { RequestValidation } from "../utility/request-validator";
 import * as bcrypt from "bcrypt";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
-
+import jwt from "jsonwebtoken";
 export class UserService {
   private static async checkIfUserExists(email: string): Promise<boolean> {
     const user = await User.findOne({ email });
@@ -12,7 +12,7 @@ export class UserService {
   }
 
   static async create(props: IUser) {
-    const { email, password } = props;
+    const { email, password, role } = props;
     const userExists = await UserService.checkIfUserExists(email);
     if (userExists) {
       throw new HttpException(400, "user already exists");
@@ -40,7 +40,9 @@ export class UserService {
     if (!validatePassword) {
       throw new HttpException(HTTP_RESPONSE_CODE.BAD_REQUEST, APP_ERROR_MESSAGE.invalidEmail);
     }
-    return user;
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+    const accessToken = jwt.sign(user.email, accessTokenSecret);
+    return { ...user.toJSON(), accessToken };
   }
 
   static async getUser(id: string) {
