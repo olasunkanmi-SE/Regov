@@ -1,5 +1,5 @@
 import { HydratedDocument } from "mongoose";
-import { IReview, Review, eventType } from "../models";
+import { IReview, Review } from "../models";
 import { EventService } from "./event-service";
 import { UserService } from "./user-service";
 import { IEventReview } from "../interfaces/create-review-interface";
@@ -16,22 +16,14 @@ export class ReviewService {
       if (rate) {
         const reviewedEvent = await EventService.getEvent(event);
         if (reviewedEvent) {
-          const promises = await Promise.all([
-            EventService.rate(event, rate),
-            new Review({ content, user, event, rate }),
-          ]);
+          const calculatedRating = await EventService.rate(event, rate);
+          review = new Review({ content, user, event, rate });
           existingEvent.ratings.push(rate);
           await EventService.updateEvent(event, {
             ratings: existingEvent.ratings,
+            averageRate: calculatedRating[0],
           });
-          review = promises[1];
         }
-      } else {
-        review = await new Review({
-          content,
-          user,
-          event,
-        });
       }
       const createdReview = await review.save();
       if (!createdReview) {

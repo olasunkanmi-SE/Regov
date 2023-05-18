@@ -47,7 +47,7 @@ export class EventService {
       event.ratings = props.ratings;
     }
     if (Object.hasOwnProperty.call(props, "rate")) {
-      event.rate = props.rate;
+      event.averageRate = props.averageRate;
     }
     await event.save();
   }

@@ -10,6 +10,7 @@ interface IError {
   reviewContent?: string;
   user?: string;
   rate?: string;
+  role?: string;
 }
 export class RequestValidation {
   static isEmail(prop: string): boolean {
@@ -30,8 +31,8 @@ export class RequestValidation {
       if (key === "password" && value.length < 8) {
         error.password = "Password length must be greater than 7";
       }
-      if (!value) {
-        error.body = `${key} is required`;
+      if (key === "role" && !value.length) {
+        error.role = "user role is required";
       }
     });
     return error;

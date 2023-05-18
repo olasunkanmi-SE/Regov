@@ -21,6 +21,7 @@ export class UserService {
     const user: HydratedDocument<IUser> = new User({
       email,
       password: hashPassword,
+      role,
     });
     const createdUser = await user.save();
     return createdUser;
@@ -41,7 +42,7 @@ export class UserService {
       throw new HttpException(HTTP_RESPONSE_CODE.BAD_REQUEST, APP_ERROR_MESSAGE.invalidEmail);
     }
     const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-    const accessToken = jwt.sign(user.email, accessTokenSecret);
+    const accessToken = jwt.sign({ email: user.email, role: user.role }, accessTokenSecret, { expiresIn: "1h" });
     return { ...user.toJSON(), accessToken };
   }
 
