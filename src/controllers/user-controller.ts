@@ -26,8 +26,10 @@ export class UserController {
         return res.status(HTTP_RESPONSE_CODE.BAD_REQUEST).json({ error });
       }
       const user = await UserService.create(reqBody);
+      const userToJson = user.toJSON();
+      const { password, ...response } = userToJson;
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
-        RequestValidation.createAPIResponse(true, HTTP_RESPONSE_CODE.SUCCESS, APP_ERROR_MESSAGE.createdUser, user, {
+        RequestValidation.createAPIResponse(true, HTTP_RESPONSE_CODE.SUCCESS, APP_ERROR_MESSAGE.createdUser, response, {
           type: "POST",
           url: "http://localhost:3000/api/users",
         })
@@ -41,12 +43,13 @@ export class UserController {
     try {
       const reqBody = req.body as IUser;
       const authenticatedUser = await UserService.authenticateUser(reqBody);
+      const { password, ...response } = authenticatedUser;
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(
           true,
           HTTP_RESPONSE_CODE.SUCCESS,
           APP_ERROR_MESSAGE.userAuthenticated,
-          authenticatedUser,
+          response,
           {
             type: "POST",
             url: "http://localhost:3000/api/users/authenticate",

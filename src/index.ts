@@ -6,11 +6,6 @@ import { ReviewController } from "./controllers/review-controller";
 
 dotenv.config();
 const port = process.env.PORT;
-const sessionSecret = process.env.SECRET;
-const app = new App(
-  [new UserController(), new EventController(), new ReviewController()],
-  parseInt(port),
-  sessionSecret
-);
+const app = new App([new UserController(), new EventController(), new ReviewController()], parseInt(port));
 
 app.listen();
