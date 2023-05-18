@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: "16"
       - name: ci for reGov
-        working-directory: ./
+        working-directory: ./Backend
         run: |
           npm i
           npm run build
