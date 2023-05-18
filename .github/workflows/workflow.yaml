@@ -2,7 +2,7 @@ name: CI for restaurant
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, release]
 
 jobs:
   build:
@@ -15,7 +15,12 @@ jobs:
         with:
           node-version: "16"
       - name: ci for reGov
-        working-directory: ./
+        working-directory: ./Backend
+        run: |
+          npm i
+          npm run build
+      - name: ci for frontend
+        working-directory: ./Frontend
         run: |
           npm i
           npm run build

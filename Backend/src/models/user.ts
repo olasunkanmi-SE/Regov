@@ -4,6 +4,7 @@ export interface IUser {
   email: string;
   role: string;
   password: string;
+  userName: string;
 }
 const userSchema = new Schema<IUser>({
   email: {
@@ -16,6 +17,10 @@ const userSchema = new Schema<IUser>({
     required: true,
   },
   role: {
+    type: String,
+    required: true,
+  },
+  userName: {
     type: String,
     required: true,
   },
