@@ -1,4 +1,4 @@
-import { Button, Container, Nav, NavDropdown, Navbar, Stack } from "react-bootstrap";
+import { Container, Nav, Navbar, Stack } from "react-bootstrap";
 
 export const NavBar = () => {
   return (
