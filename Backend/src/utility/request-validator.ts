@@ -34,6 +34,9 @@ export class RequestValidation {
       if (key === "role" && !value.length) {
         error.role = "user role is required";
       }
+      if (key === "userName" && !value.length) {
+        error.role = "username is required";
+      }
     });
     return error;
   }
