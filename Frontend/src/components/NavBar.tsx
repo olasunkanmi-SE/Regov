@@ -6,7 +6,9 @@ export const NavBar = () => {
     <>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">Events</Navbar.Brand>
+          <Navbar.Brand to="/" as={NavLink}>
+            Events
+          </Navbar.Brand>
           <Nav className="me-auto"></Nav>
           <Stack gap={3} direction="horizontal">
             <Nav.Link to="/register" className="ms-auto" href="#home" as={NavLink}>
