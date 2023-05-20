@@ -3,6 +3,7 @@ import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
 import { RequestValidation } from "../utility/request-validator";
 import { ReviewService } from "../services/review-services";
 import { authenticate } from "../middlewares/auth-middleware";
+import { Review } from "../models";
 export class ReviewController {
   path = "/reviews";
   router = express.Router();
@@ -13,6 +14,7 @@ export class ReviewController {
   initRoutes() {
     this.router.post(this.path, authenticate, this.createReview);
     this.router.get(this.path, this.getReviews);
+    this.router.delete(this.path, this.deleteReviews);
   }
 
   async createReview(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -61,6 +63,14 @@ export class ReviewController {
           }
         )
       );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteReviews(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      return await ReviewService.deleteReviews();
     } catch (error) {
       next(error);
     }

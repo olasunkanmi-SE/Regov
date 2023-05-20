@@ -1,9 +1,9 @@
 import * as express from "express";
-import { RequestValidation } from "../utility/request-validator";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
-import { EventService } from "../services";
-import { IEvent } from "../models";
 import { authenticate } from "../middlewares/auth-middleware";
+import { IEvent } from "../models";
+import { EventService } from "../services";
+import { RequestValidation } from "../utility/request-validator";
 
 export class EventController {
   path = "/events";
@@ -15,6 +15,8 @@ export class EventController {
   initRoutes() {
     this.router.post(this.path, authenticate, this.createEvent);
     this.router.get(this.path, this.getEvents);
+    this.router.get(this.path + "/event", this.getEventById);
+    this.router.delete(this.path, this.deleteEvents);
   }
 
   async createEvent(req: any, res: express.Response, next: express.NextFunction) {
@@ -48,10 +50,39 @@ export class EventController {
           events,
           {
             type: "GET",
-            url: `http://localhost:3000/api/reviews`,
+            url: `http://localhost:3000/api/events`,
           }
         )
       );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getEventById(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      const id = req.query.id.toString();
+      const events = await EventService.getEvent(id);
+      return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
+        RequestValidation.createAPIResponse(
+          true,
+          HTTP_RESPONSE_CODE.SUCCESS,
+          APP_ERROR_MESSAGE.eventsReturned,
+          events,
+          {
+            type: "GET",
+            url: `http://localhost:3000/api/events/${id}`,
+          }
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteEvents(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      return await EventService.deleteEvents();
     } catch (error) {
       next(error);
     }

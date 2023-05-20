@@ -77,4 +77,8 @@ export class UserService {
     const users = await User.find();
     return users;
   }
+
+  static async deleteUsers() {
+    return await User.deleteMany();
+  }
 }

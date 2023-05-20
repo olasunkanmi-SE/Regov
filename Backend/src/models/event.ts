@@ -5,15 +5,15 @@ export enum eventType {
   DRAFT = "draft",
 }
 export interface IEvent {
-  userId: Types.ObjectId;
+  userId?: Types.ObjectId;
   user?: any;
   title: string;
   content: string;
   ratings?: number[];
   averageRate?: number;
   type: eventType;
-  createdDateTime: string;
-  createdBy: string;
+  createdDateTime?: string;
+  createdBy?: string;
   modifiedBy?: string;
   modifiedDateTime?: string;
   deletedBy?: string;
@@ -22,7 +22,6 @@ export interface IEvent {
 const eventSchema = new Schema<IEvent>({
   userId: {
     type: Schema.Types.ObjectId,
-    required: true,
     ref: "User",
   },
   user: {

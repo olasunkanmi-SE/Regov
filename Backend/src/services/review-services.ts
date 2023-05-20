@@ -10,7 +10,7 @@ import { IAudit } from "../models/audit";
 export class ReviewService {
   static async create(props: IEventReview) {
     const { content, user, event, rate } = props;
-    const existingUser = await UserService.getUser(user.toString());
+    const existingUser = await UserService.getUserById(user.toString());
     const existingEvent = await EventService.getEvent(event.toString());
     let review: HydratedDocument<IReview>;
     if (existingUser && existingEvent) {
@@ -44,5 +44,9 @@ export class ReviewService {
   static async getReviews() {
     const reviews: HydratedDocument<IReview>[] = await Review.find();
     return reviews;
+  }
+
+  static async deleteReviews() {
+    return await Review.deleteMany();
   }
 }

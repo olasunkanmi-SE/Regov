@@ -57,7 +57,7 @@ export class EventService {
     if (Object.hasOwnProperty.call(props, "ratings")) {
       event.ratings = props.ratings;
     }
-    if (Object.hasOwnProperty.call(props, "rate")) {
+    if (Object.hasOwnProperty.call(props, "averageRate")) {
       event.averageRate = props.averageRate;
     }
     const audit: IAudit = {
@@ -66,6 +66,14 @@ export class EventService {
     };
     event.modifiedBy = audit.modifiedBy;
     event.modifiedDateTime = audit.modifiedDateTime;
-    await event.save();
+    const updatedEvent = await event.save();
+    if (!updatedEvent) {
+      throw new HttpException(HTTP_RESPONSE_CODE.SERVER_ERROR, APP_ERROR_MESSAGE.serverError);
+    }
+    return updatedEvent;
+  }
+
+  static async deleteEvents() {
+    return await Event.deleteMany();
   }
 }
