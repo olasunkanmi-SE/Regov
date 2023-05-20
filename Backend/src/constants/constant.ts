@@ -5,6 +5,7 @@ export const HTTP_RESPONSE_CODE = {
   BAD_REQUEST: 400,
   SUCCESS: 200,
   UNAUTHORIZED: 401,
+  SERVER_ERROR: 500,
 };
 
 export const enum HttpStatusCode {
@@ -30,4 +31,8 @@ export const APP_ERROR_MESSAGE = {
   eventDoesntExist: "Event does not exist",
   invalidCredentials: "Invalid user email or password",
   invalidEmail: "Enter a valid email address",
+};
+
+export const literals = {
+  user: "user",
 };

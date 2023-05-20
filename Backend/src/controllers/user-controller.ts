@@ -2,7 +2,7 @@ import * as express from "express";
 import { RequestValidation } from "../utility/request-validator";
 import { UserService } from "../services/user-service";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
-import { IUser } from "../models";
+import { IUser, User } from "../models";
 
 export class UserController {
   path = "/users";
@@ -16,6 +16,7 @@ export class UserController {
     this.router.get(this.path, this.getUsers);
     this.router.get(this.path + "/user", this.getUser);
     this.router.post(this.path + "/authenticate", this.authenticateUser);
+    this.router.delete(this.path, this.deleteUsers);
   }
 
   private async createUser(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -64,7 +65,7 @@ export class UserController {
   async getUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
       const id = req.query.id;
-      const user = await UserService.getUser(id.toString());
+      const user = await UserService.getUserById(id.toString());
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(true, HTTP_RESPONSE_CODE.SUCCESS, APP_ERROR_MESSAGE.userReturned, user, {
           type: "POST",
@@ -85,6 +86,14 @@ export class UserController {
           url: `http://localhost:3000/api/users`,
         })
       );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteUsers(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      return await UserService.deleteUsers();
     } catch (error) {
       next(error);
     }
