@@ -9,17 +9,22 @@ const userApi = axios.create({
 
 export const GetUsers = async (): Promise<IUsersResponse> => {
   const response = await userApi.get("/users");
-  return response.data;
+  return response.data.data;
 };
 
-export const CreateUser = async (user: ICreateUser): Promise<IUserResponse> => {
-  const response = await userApi.post("/user", user);
-  return response.data;
+export const Register = async (user: ICreateUser): Promise<IUserResponse> => {
+  const response = await userApi.post("/users", user, { withCredentials: false });
+  return response.data.data;
+};
+
+export const Login = async (user: Omit<ICreateUser, "userName">): Promise<IUserResponse> => {
+  const response = await userApi.post("/users", user);
+  return response.data.data;
 };
 
 const QueryUserItem = async (id: string): Promise<IUserResponse> => {
   const response = await userApi.get(`/Users/${id}`);
-  return response.data;
+  return response.data.data;
 };
 
 export const GetUserById = (id: string): QueryObserverResult<IUserResponse> => {

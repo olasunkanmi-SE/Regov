@@ -5,10 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Card } from "react-bootstrap";
 import { FormInput } from "../Form/form-input";
+import { useAuth } from "../../hooks/useAuth";
 
 export type RegisterFormProps = {
   email: string;
-  name: string;
+  userName: string;
   password: string;
   confirmPassword: string;
 };
@@ -16,7 +17,7 @@ export type RegisterFormProps = {
 const validateInputSchema = z
   .object({
     email: z.string().email("Enter a valid email address"),
-    name: z.string().min(2),
+    userName: z.string().min(2),
     password: z.string().min(8, "Enter a minimum of 8 characters").max(256, "Consider using a short password"),
     confirmPassword: z.string(),
   })
@@ -28,13 +29,14 @@ const validateInputSchema = z
 type validationSchema = z.infer<typeof validateInputSchema>;
 
 export const AuthForm = () => {
+  const { signUp, currentUser } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<validationSchema>({ resolver: zodResolver(validateInputSchema) });
 
-  const onSubmit: SubmitHandler<validationSchema> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<validationSchema> = (data) => signUp(data);
   return (
     <Card>
       <Card.Body>
@@ -46,7 +48,13 @@ export const AuthForm = () => {
             register={register}
             errors={errors}
           />
-          <FormInput<RegisterFormProps> id="name" name="name" placeholder="name" register={register} errors={errors} />
+          <FormInput<RegisterFormProps>
+            id="userName"
+            name="userName"
+            placeholder="Username"
+            register={register}
+            errors={errors}
+          />
           <FormInput<RegisterFormProps>
             id="password"
             name="password"

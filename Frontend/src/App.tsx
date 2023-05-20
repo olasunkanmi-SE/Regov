@@ -1,12 +1,13 @@
 import { Col, Container, Row } from "react-bootstrap";
-import { NavBar } from "./components/NavBar";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Register } from "./pages/Register";
+import { NavBar } from "./components/NavBar";
+import { AuthProvider } from "./contexts/AuthContext";
 import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <div>
         <Container>
           <Row>
@@ -24,7 +25,7 @@ function App() {
           </Row>
         </Container>
       </div>
-    </>
+    </AuthProvider>
   );
 }
 
