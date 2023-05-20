@@ -64,7 +64,7 @@ export class UserController {
   async getUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
       const id = req.query.id;
-      const user = await UserService.getUser(id.toString());
+      const user = await UserService.getUserById(id.toString());
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(true, HTTP_RESPONSE_CODE.SUCCESS, APP_ERROR_MESSAGE.userReturned, user, {
           type: "POST",

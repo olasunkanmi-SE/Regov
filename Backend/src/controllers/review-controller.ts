@@ -48,19 +48,13 @@ export class ReviewController {
   async getReviews(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
       const reviews = await ReviewService.getReviews();
-      const response = reviews.map((review) => {
-        return {
-          _id: review._id,
-          content: review.content,
-          rate: review.rate,
-        };
-      });
+
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(
           true,
           HTTP_RESPONSE_CODE.SUCCESS,
           APP_ERROR_MESSAGE.reviewsReturned,
-          response,
+          reviews,
           {
             type: "GET",
             url: `http://localhost:3000/api/reviews`,

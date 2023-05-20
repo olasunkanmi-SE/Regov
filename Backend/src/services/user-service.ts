@@ -5,6 +5,11 @@ import { RequestValidation } from "../utility/request-validator";
 import * as bcrypt from "bcrypt";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE, literals } from "../constants/constant";
 import jwt from "jsonwebtoken";
+
+enum querType {
+  ID = "id",
+  EMAIL = "email",
+}
 export class UserService {
   private static async checkIfUserExists(email: string): Promise<boolean> {
     const user = await User.findOne({ email });
@@ -52,8 +57,16 @@ export class UserService {
     return { ...user.toJSON(), accessToken };
   }
 
-  static async getUser(id: string) {
+  static async getUserById(id: string) {
     const user = await User.findById(id);
+    if (!user) {
+      throw new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.userDoesntExist);
+    }
+    return user;
+  }
+
+  static async getUserByEmail(email: string) {
+    const user = await User.findOne({ where: { email } });
     if (!user) {
       throw new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.userDoesntExist);
     }

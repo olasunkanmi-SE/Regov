@@ -1,10 +1,12 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 
 export enum eventType {
   POST = "post",
   DRAFT = "draft",
 }
 export interface IEvent {
+  userId: Types.ObjectId;
+  user?: any;
   title: string;
   content: string;
   ratings?: number[];
@@ -18,6 +20,14 @@ export interface IEvent {
   deletedDateTime?: string;
 }
 const eventSchema = new Schema<IEvent>({
+  userId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
+  user: {
+    type: Object,
+  },
   content: {
     type: String,
     required: true,
