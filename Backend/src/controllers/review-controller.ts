@@ -31,7 +31,11 @@ export class ReviewController {
           true,
           HTTP_RESPONSE_CODE.SUCCESS,
           APP_ERROR_MESSAGE.reviewCreated,
-          { _id: review._id, content: review.content, rate: review.rate },
+          {
+            _id: review._id,
+            content: review.content,
+            rate: review.rate,
+          },
           {
             type: "POST",
             url: "http://localhost:3000/api/reviews",

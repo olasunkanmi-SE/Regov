@@ -10,6 +10,12 @@ export interface IEvent {
   ratings?: number[];
   averageRate?: number;
   type: eventType;
+  createdDateTime: string;
+  createdBy: string;
+  modifiedBy?: string;
+  modifiedDateTime?: string;
+  deletedBy?: string;
+  deletedDateTime?: string;
 }
 const eventSchema = new Schema<IEvent>({
   content: {
@@ -29,6 +35,24 @@ const eventSchema = new Schema<IEvent>({
   },
   averageRate: {
     type: Number,
+  },
+  createdDateTime: {
+    type: String,
+  },
+  createdBy: {
+    type: String,
+  },
+  modifiedBy: {
+    type: String,
+  },
+  modifiedDateTime: {
+    type: String,
+  },
+  deletedBy: {
+    type: String,
+  },
+  deletedDateTime: {
+    type: String,
   },
 });
 export const Event = model("Event", eventSchema);

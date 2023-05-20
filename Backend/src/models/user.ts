@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 export interface IUser {
   email: string;
-  role: string;
+  role?: string;
   password: string;
   userName: string;
 }
@@ -22,7 +22,6 @@ const userSchema = new Schema<IUser>({
   },
   userName: {
     type: String,
-    required: true,
   },
 });
 export const User = model("User", userSchema);
