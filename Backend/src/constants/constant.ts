@@ -5,6 +5,7 @@ export const HTTP_RESPONSE_CODE = {
   BAD_REQUEST: 400,
   SUCCESS: 200,
   UNAUTHORIZED: 401,
+  SERVER_ERROR: 500,
 };
 
 export const enum HttpStatusCode {

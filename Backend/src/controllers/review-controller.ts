@@ -3,6 +3,7 @@ import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
 import { RequestValidation } from "../utility/request-validator";
 import { ReviewService } from "../services/review-services";
 import { authenticate } from "../middlewares/auth-middleware";
+import { Review } from "../models";
 export class ReviewController {
   path = "/reviews";
   router = express.Router();
@@ -13,6 +14,7 @@ export class ReviewController {
   initRoutes() {
     this.router.post(this.path, authenticate, this.createReview);
     this.router.get(this.path, this.getReviews);
+    this.router.delete(this.path, this.deleteReviews);
   }
 
   async createReview(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -48,25 +50,27 @@ export class ReviewController {
   async getReviews(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
       const reviews = await ReviewService.getReviews();
-      const response = reviews.map((review) => {
-        return {
-          _id: review._id,
-          content: review.content,
-          rate: review.rate,
-        };
-      });
+
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(
           true,
           HTTP_RESPONSE_CODE.SUCCESS,
           APP_ERROR_MESSAGE.reviewsReturned,
-          response,
+          reviews,
           {
             type: "GET",
             url: `http://localhost:3000/api/reviews`,
           }
         )
       );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteReviews(req: express.Request, res: express.Response, next: express.NextFunction) {
+    try {
+      return await ReviewService.deleteReviews();
     } catch (error) {
       next(error);
     }

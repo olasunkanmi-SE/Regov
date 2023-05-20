@@ -3,6 +3,7 @@ import { Event, IEvent, IUser } from "../models";
 import { HttpException } from "../exceptions/exception";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
 import { IAudit } from "../models/audit";
+import { UserService } from "./user-service";
 
 export class EventService {
   static async create(props: IEvent, user: Partial<IUser>) {
@@ -11,7 +12,12 @@ export class EventService {
       createdDateTime: new Date().toISOString(),
       createdBy: user.email,
     };
-    const event: HydratedDocument<IEvent> = new Event({ title, content, type, ...audit });
+    const userResponse = await UserService.getUserByEmail(user.email.toString());
+    const response = userResponse.toJSON();
+    let event: HydratedDocument<IEvent> | undefined;
+    if (userResponse) {
+      event = new Event({ title, userId: response._id, content, type, ...audit, user: response });
+    }
     const createdEvent = await event.save();
     return createdEvent;
   }
@@ -51,7 +57,7 @@ export class EventService {
     if (Object.hasOwnProperty.call(props, "ratings")) {
       event.ratings = props.ratings;
     }
-    if (Object.hasOwnProperty.call(props, "rate")) {
+    if (Object.hasOwnProperty.call(props, "averageRate")) {
       event.averageRate = props.averageRate;
     }
     const audit: IAudit = {
@@ -60,6 +66,14 @@ export class EventService {
     };
     event.modifiedBy = audit.modifiedBy;
     event.modifiedDateTime = audit.modifiedDateTime;
-    await event.save();
+    const updatedEvent = await event.save();
+    if (!updatedEvent) {
+      throw new HttpException(HTTP_RESPONSE_CODE.SERVER_ERROR, APP_ERROR_MESSAGE.serverError);
+    }
+    return updatedEvent;
+  }
+
+  static async deleteEvents() {
+    return await Event.deleteMany();
   }
 }
