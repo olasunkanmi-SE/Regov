@@ -5,6 +5,7 @@ import { UserService } from "./user-service";
 import { IEventReview } from "../interfaces/create-review-interface";
 import { HttpException } from "../exceptions/exception";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
+import { IAudit } from "../models/audit";
 
 export class ReviewService {
   static async create(props: IEventReview) {
@@ -17,12 +18,20 @@ export class ReviewService {
         const reviewedEvent = await EventService.getEvent(event);
         if (reviewedEvent) {
           const calculatedRating = await EventService.rate(event, rate);
+          const audit: IAudit = {
+            createdBy: existingUser.email,
+            createdDateTime: new Date().toISOString(),
+          };
           review = new Review({ content, user, event, rate });
           existingEvent.ratings.push(rate);
-          await EventService.updateEvent(event, {
-            ratings: existingEvent.ratings,
-            averageRate: calculatedRating[0],
-          });
+          await EventService.updateEvent(
+            event,
+            {
+              ratings: existingEvent.ratings,
+              averageRate: calculatedRating[0],
+            },
+            existingUser
+          );
         }
       }
       const createdReview = await review.save();

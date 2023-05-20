@@ -1,12 +1,17 @@
 import { HydratedDocument } from "mongoose";
-import { Event, IEvent } from "../models";
+import { Event, IEvent, IUser } from "../models";
 import { HttpException } from "../exceptions/exception";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
+import { IAudit } from "../models/audit";
 
 export class EventService {
-  static async create(props: IEvent) {
+  static async create(props: IEvent, user: Partial<IUser>) {
     const { title, content, type } = props;
-    const event: HydratedDocument<IEvent> = new Event({ title, content, type });
+    const audit: IAudit = {
+      createdDateTime: new Date().toISOString(),
+      createdBy: user.email,
+    };
+    const event: HydratedDocument<IEvent> = new Event({ title, content, type, ...audit });
     const createdEvent = await event.save();
     return createdEvent;
   }
@@ -38,7 +43,7 @@ export class EventService {
     return [averageRating, eventRatings];
   }
 
-  static async updateEvent(id: string, props: Partial<IEvent>) {
+  static async updateEvent(id: string, props: Partial<IEvent>, user: Partial<IUser>) {
     const event = await EventService.getEvent(id);
     if (Object.hasOwnProperty.call(props, "content")) {
       event.content = props.content;
@@ -49,6 +54,12 @@ export class EventService {
     if (Object.hasOwnProperty.call(props, "rate")) {
       event.averageRate = props.averageRate;
     }
+    const audit: IAudit = {
+      modifiedDateTime: new Date().toISOString(),
+      modifiedBy: user.email,
+    };
+    event.modifiedBy = audit.modifiedBy;
+    event.modifiedDateTime = audit.modifiedDateTime;
     await event.save();
   }
 }

@@ -5,6 +5,12 @@ export interface IReview {
   user: Types.ObjectId;
   event: Types.ObjectId;
   rate?: number;
+  createdDateTime: string;
+  createdBy: string;
+  modifiedBy?: string;
+  modifiedDateTime?: string;
+  deletedBy?: string;
+  deletedDateTime?: string;
 }
 const reviewSchema = new Schema<IReview>({
   content: {
@@ -23,6 +29,24 @@ const reviewSchema = new Schema<IReview>({
   },
   rate: {
     type: Number,
+  },
+  createdDateTime: {
+    type: String,
+  },
+  createdBy: {
+    type: String,
+  },
+  modifiedBy: {
+    type: String,
+  },
+  modifiedDateTime: {
+    type: String,
+  },
+  deletedBy: {
+    type: String,
+  },
+  deletedDateTime: {
+    type: String,
   },
 });
 export const Review = model("Review", reviewSchema);

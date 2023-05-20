@@ -31,3 +31,7 @@ export const APP_ERROR_MESSAGE = {
   invalidCredentials: "Invalid user email or password",
   invalidEmail: "Enter a valid email address",
 };
+
+export const literals = {
+  user: "user",
+};
