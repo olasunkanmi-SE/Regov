@@ -8,7 +8,7 @@ export const NavBar = () => {
     <>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand to="/" as={NavLink}>
+          <Navbar.Brand to="/events" as={NavLink}>
             Events
           </Navbar.Brand>
           <Nav className="me-auto"></Nav>
@@ -27,11 +27,15 @@ export const NavBar = () => {
             ) : (
               ""
             )}
-            <NavDropdown title={currentUser?.userName} id="basic-nav-dropdown">
-              <NavDropdown.Item href="">Profile</NavDropdown.Item>
-              <NavDropdown.Item href="">Events</NavDropdown.Item>
-              <NavDropdown.Item href="">Review</NavDropdown.Item>
-            </NavDropdown>
+            {isAuthenticated ? (
+              <NavDropdown title={currentUser?.userName} id="basic-nav-dropdown">
+                <NavDropdown.Item href="">Drafts</NavDropdown.Item>
+                <NavDropdown.Item href="">Events</NavDropdown.Item>
+                <NavDropdown.Item href="">Log out</NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              ""
+            )}
           </Stack>
         </Container>
       </Navbar>

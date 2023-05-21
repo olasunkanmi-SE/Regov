@@ -12,5 +12,5 @@ export const eventApi = axios.create({
 export const axiosPrivate = axios.create({
   baseURL: baseURL,
   headers: { "Content-Type": "application/json" },
-  withCredentials: true,
+  withCredentials: false,
 });
