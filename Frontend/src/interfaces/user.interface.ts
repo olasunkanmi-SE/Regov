@@ -4,7 +4,7 @@ export interface ICreateUser {
   userName: string;
 }
 
-interface IUser {
+export interface IUser {
   _id: string;
   email: string;
   role?: string;
@@ -20,10 +20,6 @@ interface IApiResponse {
 
 export interface IUsersResponse extends IApiResponse {
   data: IUser[];
-  request: {
-    type: string;
-    url: string;
-  };
 }
 
 export interface IUserResponse extends IApiResponse {

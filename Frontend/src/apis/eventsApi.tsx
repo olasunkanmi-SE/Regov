@@ -1,24 +1,19 @@
-import axios from "axios";
 import { QueryObserverResult, useQuery } from "react-query";
-import { baseURL } from "../constants";
 import { ICreateEvent, IEventResponse } from "../interfaces/event.interface";
-
-const userApi = axios.create({
-  baseURL: baseURL,
-});
+import { eventApi } from "./axios";
 
 export const GetEvents = async (): Promise<IEventResponse[]> => {
-  const response = await userApi.get("/events");
+  const response = await eventApi.get("/events");
   return response.data;
 };
 
 export const CreateEvent = async (event: ICreateEvent): Promise<IEventResponse> => {
-  const response = await userApi.post("/events", event);
+  const response = await eventApi.post("/events", event);
   return response.data;
 };
 
 const QueryEventItem = async (id: string): Promise<IEventResponse> => {
-  const response = await userApi.get(`/events/event?id=${id}`);
+  const response = await eventApi.get(`/events/event?id=${id}`);
   return response.data;
 };
 
