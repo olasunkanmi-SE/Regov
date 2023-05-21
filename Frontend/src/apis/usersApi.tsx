@@ -1,11 +1,6 @@
-import axios from "axios";
 import { QueryObserverResult, useQuery } from "react-query";
-import { baseURL } from "../constants";
-import { ICreateUser, IUserResponse, IUsersResponse } from "../interfaces/user.interface";
-
-const userApi = axios.create({
-  baseURL: baseURL,
-});
+import { ICreateUser, IUser, IUserResponse, IUsersResponse } from "../interfaces/user.interface";
+import { userApi } from "./axios";
 
 export const GetUsers = async (): Promise<IUsersResponse> => {
   const response = await userApi.get("/users");
@@ -13,12 +8,12 @@ export const GetUsers = async (): Promise<IUsersResponse> => {
 };
 
 export const Register = async (user: ICreateUser): Promise<IUserResponse> => {
-  const response = await userApi.post("/users", user, { withCredentials: false });
+  const response = await userApi.post("/users", user);
   return response.data.data;
 };
 
-export const Login = async (user: Omit<ICreateUser, "userName">): Promise<IUserResponse> => {
-  const response = await userApi.post("/users", user);
+export const Login = async (user: Omit<ICreateUser, "userName">): Promise<IUser> => {
+  const response = await userApi.post("/users/authenticate", user);
   return response.data.data;
 };
 
