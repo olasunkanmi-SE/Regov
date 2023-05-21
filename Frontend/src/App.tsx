@@ -6,15 +6,19 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Event } from "./pages/Event";
 import { useEffect } from "react";
+import { useAuth } from "./hooks/useAuth";
 
 function App() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    const redirectTimeout = setTimeout(() => {
-      navigate("/events");
-    }, 500);
-    return () => clearTimeout(redirectTimeout);
+    if (isAuthenticated) {
+      const redirectTimeout = setTimeout(() => {
+        navigate("/events");
+      }, 500);
+      return () => clearTimeout(redirectTimeout);
+    }
   }, [navigate]);
   return (
     <AuthProvider>

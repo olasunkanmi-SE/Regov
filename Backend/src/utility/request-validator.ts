@@ -61,13 +61,13 @@ export class RequestValidation {
       if (!value) {
         error.body = `${key} is required`;
       }
-      if (value === "title" && value.length < 5) {
+      if (value === "title" && !value.length) {
         error.title = "title is too short";
       }
       if (key === "type" && (value !== "post" || "draft")) {
         error.type = "event type should either be post or draft";
       }
-      if (key === "content" && value.length < 10) {
+      if (key === "content" && !value.length) {
         error.content = "content is too short";
       }
     });

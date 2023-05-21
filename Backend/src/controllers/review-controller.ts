@@ -40,7 +40,7 @@ export class ReviewController {
           },
           {
             type: "POST",
-            url: "http://localhost:3000/api/reviews",
+            url: "http://localhost:3000/reviews",
           }
         )
       );

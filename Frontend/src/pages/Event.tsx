@@ -29,7 +29,7 @@ export const Event = () => {
             <div className="card-body">
               <h5 className="card-title">{title}</h5>
               <p className="card-text">{content}</p>
-              <p className="card-text">Rating: {averageRate}</p>
+              <p className="card-text">{averageRate ? `Average rating: ${averageRate}` : ""}</p>
               <a href="#" className="btn btn-success">
                 Rate
               </a>

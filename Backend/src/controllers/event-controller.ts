@@ -31,7 +31,7 @@ export class EventController {
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(true, HTTP_RESPONSE_CODE.SUCCESS, APP_ERROR_MESSAGE.eventCreated, event, {
           type: "POST",
-          url: "http://localhost:3000/api/events",
+          url: "http://localhost:4000/events",
         })
       );
     } catch (error) {
