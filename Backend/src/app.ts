@@ -9,6 +9,7 @@ export class App {
 
   constructor(controllers: unknown, port: number) {
     this.app = express();
+    this.cors();
     this.port = port;
     this.connectDB();
     this.initMiddleWares();
@@ -32,6 +33,14 @@ export class App {
 
   private initMiddleWares() {
     this.app.use(bodyParser.json());
+  }
+
+  private cors() {
+    this.app.use(function (req, res, next) {
+      res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    });
   }
 
   private intializeErrorHandling() {
