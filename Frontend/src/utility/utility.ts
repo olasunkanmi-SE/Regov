@@ -21,7 +21,7 @@ export const getDecryptedLocalStorage = (key: string, decrypt: boolean) => {
   if (value && decrypt) {
     try {
       const decryptedText = cryptoJs.AES.decrypt(value, import.meta.env.VITE_SECRET);
-      value = decryptedText.toString(cryptoJs.enc.Utf8);
+      return decryptedText.toString(cryptoJs.enc.Utf8);
     } catch (error) {
       console.log("Error while getting user data", error);
     }

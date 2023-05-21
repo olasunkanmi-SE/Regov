@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useAuth } from "../../hooks/useAuth";
 import { FormInput } from "../Form/form-input";
@@ -20,6 +20,7 @@ type validationSchema = z.infer<typeof validateInputSchema>;
 
 export const LoginForm = () => {
   const { login, error, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   if (isAuthenticated) {
     return <Navigate to="/" />;
   }
@@ -29,7 +30,10 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<validationSchema>({ resolver: zodResolver(validateInputSchema) });
 
-  const onSubmit: SubmitHandler<validationSchema> = (data) => login(data);
+  const onSubmit: SubmitHandler<validationSchema> = (data) => {
+    login(data);
+    navigate("/events");
+  };
 
   return (
     <div>
