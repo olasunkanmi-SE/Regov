@@ -27,11 +27,15 @@ export const NavBar = () => {
             ) : (
               ""
             )}
-            <NavDropdown title={currentUser?.userName} id="basic-nav-dropdown">
-              <NavDropdown.Item href="">Profile</NavDropdown.Item>
-              <NavDropdown.Item href="">Events</NavDropdown.Item>
-              <NavDropdown.Item href="">Review</NavDropdown.Item>
-            </NavDropdown>
+            {isAuthenticated ? (
+              <NavDropdown title={currentUser?.userName} id="basic-nav-dropdown">
+                <NavDropdown.Item href="">Profile</NavDropdown.Item>
+                <NavDropdown.Item href="">Events</NavDropdown.Item>
+                <NavDropdown.Item href="">Review</NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              ""
+            )}
           </Stack>
         </Container>
       </Navbar>
