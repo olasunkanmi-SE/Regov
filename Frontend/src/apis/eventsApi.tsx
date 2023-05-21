@@ -1,8 +1,8 @@
 import { QueryObserverResult, useQuery } from "react-query";
-import { ICreateEvent, IEventResponse } from "../interfaces/event.interface";
+import { ICreateEvent, IEventResponse, IEventsResponse } from "../interfaces/event.interface";
 import { eventApi } from "./axios";
 
-export const GetEvents = async (): Promise<IEventResponse[]> => {
+export const GetEvents = async (): Promise<IEventsResponse> => {
   const response = await eventApi.get("/events");
   return response.data;
 };
@@ -23,7 +23,7 @@ export const GetUserById = (id: string): QueryObserverResult<IEventResponse> => 
     cacheTime: 1000000,
     onSuccess: (res) => {
       return {
-        data: res.data,
+        data: res,
         isSuccess: res.success,
       };
     },

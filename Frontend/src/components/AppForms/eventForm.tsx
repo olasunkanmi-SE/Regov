@@ -32,13 +32,14 @@ export const CreateEventForm = () => {
 
   const navigate = useNavigate();
 
+  const { reset } = useForm();
+
   const CreateEvent = async (event: ICreateEvent): Promise<IEventResponse> => {
     const response = await axiosPrivate.post("/events", event);
     return response.data;
   };
   const createEventMutation = useMutation(CreateEvent, {
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       queryClient.invalidateQueries("events");
     },
     onError: (error) => {
@@ -60,6 +61,7 @@ export const CreateEventForm = () => {
       navigate("/login");
     } else {
       createEvent(data);
+      reset();
     }
   };
 
