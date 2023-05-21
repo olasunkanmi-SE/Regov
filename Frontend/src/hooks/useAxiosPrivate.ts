@@ -2,16 +2,16 @@ import { useEffect } from "react";
 import { axiosPrivate } from "../apis/axios";
 import { useAuth } from "./useAuth";
 
-const useAxiosPrivate = () => {
+export const useAxiosPrivate = () => {
   const { currentUser, logOut } = useAuth();
 
   useEffect(() => {
     const requestInterceptor = axiosPrivate.interceptors.request.use(
-      (request) => {
-        if (!request.headers["Authorization"]) {
-          request.headers["Authorization"] = `Bearer ${currentUser?.accessToken}`;
+      (config) => {
+        if (!config.headers["Authorization"]) {
+          config.headers["Authorization"] = `Bearer ${currentUser?.accessToken}`;
         }
-        return request;
+        return config;
       },
       (error) => Promise.reject(error)
     );
@@ -29,7 +29,7 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestInterceptor);
       axiosPrivate.interceptors.response.eject(responseInterceptor);
     };
-  });
+  }, [currentUser]);
   return axiosPrivate;
 };
 

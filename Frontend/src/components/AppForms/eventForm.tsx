@@ -1,41 +1,66 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { Button, Form, Stack } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { useAuth } from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { ICreateEvent, IEventResponse } from "../../interfaces/event.interface";
 import { FormInput } from "../Form/form-input";
 
-type postType = "draft" | "post";
 export type EventFormProps = {
   title: string;
-  type: postType;
+  type: string;
   content: string;
 };
 
 const validateInputSchema = z.object({
-  title: z.string(),
-  type: z.enum(["draft", "post"]),
-  content: z.string(),
+  title: z.string().min(1),
+  type: z.string().min(1),
+  content: z.string().min(1),
 });
 
 type validationSchema = z.infer<typeof validateInputSchema>;
 
 export const CreateEventForm = () => {
-  const [postType, setPostType] = useState<string>();
+  const queryClient = useQueryClient();
+
+  const { isAuthenticated } = useAuth();
+
+  const axiosPrivate = useAxiosPrivate();
+
+  const navigate = useNavigate();
+
+  const CreateEvent = async (event: ICreateEvent): Promise<IEventResponse> => {
+    const response = await axiosPrivate.post("/events", event);
+    return response.data;
+  };
+  const createEventMutation = useMutation(CreateEvent, {
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.invalidateQueries("events");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  const createEvent = (event: ICreateEvent) => {
+    createEventMutation.mutate(event);
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<validationSchema>({ resolver: zodResolver(validateInputSchema) });
 
-  const onSubmit: SubmitHandler<validationSchema> = (data) => console.log(data);
-
-  const handleDraft = () => {
-    setPostType("draft");
-  };
-
-  const handlePost = () => {
-    setPostType("post");
+  const onSubmit: SubmitHandler<validationSchema> = (data) => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    } else {
+      createEvent(data);
+    }
   };
 
   return (
@@ -57,22 +82,15 @@ export const CreateEventForm = () => {
           errors={errors}
           style={{ height: "100px" }}
         />
-        <div style={{ display: "none" }}>
-          <FormInput<EventFormProps> id="type" name="type" register={register} value={postType} errors={errors} />
-        </div>
         <div>
-          <Stack direction="horizontal" gap={3}>
-            <div className="ms-auto">
-              <Button variant="dark" type="submit" onClick={handleDraft}>
-                Draft
-              </Button>
-            </div>
-            <div>
-              <Button variant="success" type="submit" onClick={handlePost}>
-                Post
-              </Button>
-            </div>
-          </Stack>
+          <select {...register("type")} style={{ width: "100%", height: "40px" }}>
+            <option value="">Select Post Type</option>
+            <option value="post">Post</option>
+            <option value="draft">Draft</option>
+          </select>
+          <Button className="w-100 mt-4" variant="success" type="submit">
+            Post
+          </Button>
         </div>
       </Form>
     </div>
