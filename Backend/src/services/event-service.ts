@@ -32,7 +32,9 @@ export class EventService {
   }
 
   static async getEvents() {
-    const events: HydratedDocument<IEvent>[] = await Event.find({}).where({ type: "post" });
+    const events: HydratedDocument<IEvent>[] = await Event.find({})
+      .where({ type: "post" })
+      .sort({ createdDateTime: "desc" });
     return events;
   }
 
