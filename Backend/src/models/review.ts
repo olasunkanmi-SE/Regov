@@ -5,6 +5,7 @@ export interface IReview {
   user: Types.ObjectId;
   event: Types.ObjectId;
   rate?: number;
+  userName?: any;
   createdDateTime: string;
   createdBy: string;
   modifiedBy?: string;
@@ -21,6 +22,9 @@ const reviewSchema = new Schema<IReview>({
     type: Schema.Types.ObjectId,
     required: true,
     ref: "User",
+  },
+  userName: {
+    type: String,
   },
   event: {
     type: Schema.Types.ObjectId,

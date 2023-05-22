@@ -51,9 +51,13 @@ export class UserService {
       throw new HttpException(HTTP_RESPONSE_CODE.BAD_REQUEST, APP_ERROR_MESSAGE.invalidEmail);
     }
     const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-    const accessToken = jwt.sign({ email: user.email, role: user.role, userName: user.userName }, accessTokenSecret, {
-      expiresIn: "1h",
-    });
+    const accessToken = jwt.sign(
+      { email: user.email, role: user.role, userName: user.userName, id: user._id },
+      accessTokenSecret,
+      {
+        expiresIn: "1h",
+      }
+    );
     return { ...user.toJSON(), accessToken };
   }
 
@@ -66,7 +70,7 @@ export class UserService {
   }
 
   static async getUserByEmail(email: string) {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({}).where(email);
     if (!user) {
       throw new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.userDoesntExist);
     }

@@ -17,6 +17,8 @@ export class EventController {
     this.router.get(this.path, this.getEvents);
     this.router.get(this.path + "/event", this.getEventById);
     this.router.delete(this.path, this.deleteEvents);
+    this.router.patch(this.path, authenticate, this.updateEvent);
+    this.router.get(this.path + "/drafts", this.getEventDrafts);
   }
 
   async createEvent(req: any, res: express.Response, next: express.NextFunction) {
@@ -31,7 +33,7 @@ export class EventController {
       return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
         RequestValidation.createAPIResponse(true, HTTP_RESPONSE_CODE.SUCCESS, APP_ERROR_MESSAGE.eventCreated, event, {
           type: "POST",
-          url: "http://localhost:3000/api/events",
+          url: "http://localhost:4000/events",
         })
       );
     } catch (error) {
@@ -72,6 +74,49 @@ export class EventController {
           {
             type: "GET",
             url: `http://localhost:3000/api/events/${id}`,
+          }
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateEvent(req: any, res: express.Response, next: express.NextFunction) {
+    try {
+      const id = req.body.id.toString();
+      const user = req.user;
+      const event = req.body;
+      const events = await EventService.updateEvent(id, event, user.id);
+      return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
+        RequestValidation.createAPIResponse(
+          true,
+          HTTP_RESPONSE_CODE.SUCCESS,
+          APP_ERROR_MESSAGE.eventsReturned,
+          events,
+          {
+            type: "GET",
+            url: `http://localhost:3000/api/events/${id}`,
+          }
+        )
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getEventDrafts(req: any, res: express.Response, next: express.NextFunction) {
+    try {
+      const events = await EventService.getEventDrafts();
+      return res.status(HTTP_RESPONSE_CODE.SUCCESS).json(
+        RequestValidation.createAPIResponse(
+          true,
+          HTTP_RESPONSE_CODE.SUCCESS,
+          APP_ERROR_MESSAGE.eventsReturned,
+          events,
+          {
+            type: "GET",
+            url: `http://localhost:3000/api/events`,
           }
         )
       );

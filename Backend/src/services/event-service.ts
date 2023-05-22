@@ -1,22 +1,23 @@
-import { HydratedDocument } from "mongoose";
-import { Event, IEvent, IUser } from "../models";
-import { HttpException } from "../exceptions/exception";
+import { HydratedDocument, Types } from "mongoose";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
+import { HttpException } from "../exceptions/exception";
+import { Event, IEvent, IUser } from "../models";
 import { IAudit } from "../models/audit";
 import { UserService } from "./user-service";
 
 export class EventService {
-  static async create(props: IEvent, user: Partial<IUser>) {
+  static async create(props: IEvent, user: any) {
     const { title, content, type } = props;
     const audit: IAudit = {
       createdDateTime: new Date().toISOString(),
       createdBy: user.email,
     };
-    const userResponse = await UserService.getUserByEmail(user.email.toString());
+    const userResponse = await UserService.getUserById(user.id.toString());
     const response = userResponse.toJSON();
     let event: HydratedDocument<IEvent> | undefined;
+    const { password, ...res } = response;
     if (userResponse) {
-      event = new Event({ title, userId: response._id, content, type, ...audit, user: response });
+      event = new Event({ title, userId: response._id, content, type, ...audit, user: res });
     }
     const createdEvent = await event.save();
     return createdEvent;
@@ -31,7 +32,9 @@ export class EventService {
   }
 
   static async getEvents() {
-    const events: HydratedDocument<IEvent>[] = await Event.find();
+    const events: HydratedDocument<IEvent>[] = await Event.find({})
+      .where({ type: "post" })
+      .sort({ createdDateTime: "desc" });
     return events;
   }
 
@@ -60,6 +63,9 @@ export class EventService {
     if (Object.hasOwnProperty.call(props, "averageRate")) {
       event.averageRate = props.averageRate;
     }
+    if (Object.hasOwnProperty.call(props, "type")) {
+      event.type = props.type;
+    }
     const audit: IAudit = {
       modifiedDateTime: new Date().toISOString(),
       modifiedBy: user.email,
@@ -75,5 +81,13 @@ export class EventService {
 
   static async deleteEvents() {
     return await Event.deleteMany();
+  }
+
+  static getEventByIds(ids: Types.ObjectId[]) {
+    return Event.find({ _id: ids });
+  }
+
+  static getEventDrafts() {
+    return Event.find({ type: "draft" });
   }
 }
