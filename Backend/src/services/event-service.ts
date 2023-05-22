@@ -15,8 +15,9 @@ export class EventService {
     const userResponse = await UserService.getUserById(user.id.toString());
     const response = userResponse.toJSON();
     let event: HydratedDocument<IEvent> | undefined;
+    const { password, ...res } = response;
     if (userResponse) {
-      event = new Event({ title, userId: response._id, content, type, ...audit, user: response });
+      event = new Event({ title, userId: response._id, content, type, ...audit, user: res });
     }
     const createdEvent = await event.save();
     return createdEvent;
