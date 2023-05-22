@@ -10,7 +10,9 @@ export interface IEventsResponse extends IapiResponse {
   data: IEvent[];
 }
 
-export interface IEventResponse extends IEvent, IapiResponse {}
+export interface IEventResponse extends IapiResponse {
+  data: IEvent;
+}
 
 export interface IEvent {
   _id: string;

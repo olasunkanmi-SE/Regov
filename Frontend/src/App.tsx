@@ -7,6 +7,7 @@ import { Register } from "./pages/Register";
 import { Event } from "./pages/Event";
 import { useEffect } from "react";
 import { useAuth } from "./hooks/useAuth";
+import { SingleEvent } from "./pages/SingleEvent";
 
 function App() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ function App() {
                   <Route path="/register" element={<Register />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/events" element={<Event />} />
+                  <Route path="/events/:id" element={<SingleEvent />} />
                   <Route path="*" element={<Navigate to=".." />} />
                 </Route>
               </Routes>

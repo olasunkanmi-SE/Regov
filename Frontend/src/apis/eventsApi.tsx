@@ -17,10 +17,10 @@ const QueryEventItem = async (id: string): Promise<IEventResponse> => {
   return response.data;
 };
 
-export const GetUserById = (id: string): QueryObserverResult<IEventResponse> => {
+export const GetEventById = (id: string): QueryObserverResult<IEventResponse> => {
   return useQuery<IEventResponse, Error>(["event", id], async () => QueryEventItem(id), {
-    staleTime: 1000000,
-    cacheTime: 1000000,
+    staleTime: 10000,
+    cacheTime: 10000,
     onSuccess: (res) => {
       return {
         data: res,

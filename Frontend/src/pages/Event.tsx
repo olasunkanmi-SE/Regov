@@ -2,7 +2,9 @@ import { useQuery } from "react-query";
 import { CreateEventForm } from "../components/AppForms/eventForm";
 import { IEvent, IEventsResponse } from "../interfaces/event.interface";
 import { GetEvents } from "../apis/eventsApi";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Stack } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Rate } from "../components/Rating";
 
 export const Event = () => {
   const {
@@ -10,7 +12,7 @@ export const Event = () => {
     isError,
     error,
     data: events,
-  } = useQuery<IEventsResponse, Error>("events", GetEvents, { staleTime: 1000000, cacheTime: 1000000 });
+  } = useQuery<IEventsResponse, Error>("events", GetEvents, { staleTime: 10000, cacheTime: 10000 });
   let response;
   if (isLoading) {
     response = (
@@ -29,11 +31,14 @@ export const Event = () => {
             <div className="card-body">
               <h5 className="card-title">{title}</h5>
               <p className="card-text">{content}</p>
-              <p className="card-text">{averageRate ? `Average rating: ${averageRate}` : ""}</p>
-              <a href="#" className="btn btn-success">
-                Rate
-              </a>
-              <p className="card-text mt-3">Hosted by: {event.user.userName}</p>
+              <Link to={`/events/${_id}`}>
+                <p>Click to Rate and Review</p>
+                <div className="card-text">{averageRate ? <Rate rate={Number(averageRate)} /> : ""}</div>
+              </Link>
+              <Stack direction="horizontal" gap={3}>
+                <p className="card-text mt-3">Hosted by: {event.user.userName}</p>
+                <span className="ms-auto"></span>
+              </Stack>
             </div>
           </div>
         </Col>
