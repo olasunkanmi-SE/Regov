@@ -24,7 +24,7 @@ export const Event = () => {
     response = <p>`${error.message}`</p>;
   } else {
     response = events?.data?.map((event: IEvent) => {
-      const { _id, content, title, averageRate, user } = event;
+      const { _id, content, title, averageRate } = event;
       return (
         <Col className="mt-5" xs={12} key={_id}>
           <div className="card w-100">

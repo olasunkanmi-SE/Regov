@@ -1,9 +1,8 @@
 import { Col, Row, Stack } from "react-bootstrap";
-import { useQuery } from "react-query";
-import { GetEventReviewsById, GetReviews } from "../apis/reviewsApi";
+import { useParams } from "react-router-dom";
+import { GetEventReviewsById } from "../apis/reviewsApi";
 import { Rate } from "../components/Rating";
 import { IEventReviewResponse } from "../interfaces/review.interface";
-import { useParams } from "react-router-dom";
 
 export const Reviews = () => {
   const { id } = useParams();

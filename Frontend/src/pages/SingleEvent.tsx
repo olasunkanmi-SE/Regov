@@ -24,11 +24,7 @@ const validateInputSchema = z.object({
 type validationSchema = z.infer<typeof validateInputSchema>;
 
 export const SingleEvent = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<validationSchema>({ resolver: zodResolver(validateInputSchema) });
+  const { register, handleSubmit } = useForm<validationSchema>({ resolver: zodResolver(validateInputSchema) });
 
   const queryClient = useQueryClient();
 
