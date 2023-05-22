@@ -1,7 +1,7 @@
-import { HydratedDocument } from "mongoose";
-import { Event, IEvent, IUser } from "../models";
-import { HttpException } from "../exceptions/exception";
+import { HydratedDocument, Types } from "mongoose";
 import { APP_ERROR_MESSAGE, HTTP_RESPONSE_CODE } from "../constants/constant";
+import { HttpException } from "../exceptions/exception";
+import { Event, IEvent, IUser } from "../models";
 import { IAudit } from "../models/audit";
 import { UserService } from "./user-service";
 
@@ -63,6 +63,9 @@ export class EventService {
     if (Object.hasOwnProperty.call(props, "averageRate")) {
       event.averageRate = props.averageRate;
     }
+    if (Object.hasOwnProperty.call(props, "type")) {
+      event.type = props.type;
+    }
     const audit: IAudit = {
       modifiedDateTime: new Date().toISOString(),
       modifiedBy: user.email,
@@ -78,5 +81,13 @@ export class EventService {
 
   static async deleteEvents() {
     return await Event.deleteMany();
+  }
+
+  static getEventByIds(ids: Types.ObjectId[]) {
+    return Event.find({ _id: ids });
+  }
+
+  static getEventDrafts() {
+    return Event.find({ type: "draft" });
   }
 }
