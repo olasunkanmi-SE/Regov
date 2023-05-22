@@ -33,7 +33,7 @@ export const Event = () => {
               <a href="#" className="btn btn-success">
                 Rate
               </a>
-              <p className="card-text mt-3">Hosted by: {user.userName}</p>
+              <p className="card-text mt-3">Hosted by: {event.user.userName}</p>
             </div>
           </div>
         </Col>

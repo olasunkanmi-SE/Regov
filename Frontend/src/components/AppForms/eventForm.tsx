@@ -75,17 +75,15 @@ export const CreateEventForm = () => {
           register={register}
           errors={errors}
         />
-        <FormInput<EventFormProps>
-          type="text"
+        <textarea
+          className="form"
           id="content"
-          name="content"
-          placeholder="Start typing ..."
-          register={register}
-          errors={errors}
-          style={{ height: "100px" }}
+          placeholder="  Start typing..."
+          style={{ height: "100px", width: "100%" }}
+          {...register("content")}
         />
         <div>
-          <select {...register("type")} style={{ width: "100%", height: "40px" }}>
+          <select {...register("type")} style={{ width: "100%", height: "40px" }} className="form mt-3">
             <option value="">Select Post Type</option>
             <option value="post">Post</option>
             <option value="draft">Draft</option>

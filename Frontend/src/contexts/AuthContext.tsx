@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }: AuthenticationProviderProps) => {
       setCurrentUser(data);
       if (currentUser) {
         setIsAuthenticated(true);
+        clearStorage();
         setEncryptedLocalStorage("user", JSON.stringify(data), true);
         navigate("/");
       }

@@ -6,13 +6,13 @@ import { IAudit } from "../models/audit";
 import { UserService } from "./user-service";
 
 export class EventService {
-  static async create(props: IEvent, user: Partial<IUser>) {
+  static async create(props: IEvent, user: any) {
     const { title, content, type } = props;
     const audit: IAudit = {
       createdDateTime: new Date().toISOString(),
       createdBy: user.email,
     };
-    const userResponse = await UserService.getUserByEmail(user.email.toString());
+    const userResponse = await UserService.getUserById(user.id.toString());
     const response = userResponse.toJSON();
     let event: HydratedDocument<IEvent> | undefined;
     if (userResponse) {
@@ -31,7 +31,7 @@ export class EventService {
   }
 
   static async getEvents() {
-    const events: HydratedDocument<IEvent>[] = await Event.find();
+    const events: HydratedDocument<IEvent>[] = await Event.find({}).where({ type: "post" });
     return events;
   }
 
