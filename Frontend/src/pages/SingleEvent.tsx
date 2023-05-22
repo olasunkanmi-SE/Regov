@@ -85,6 +85,7 @@ export const SingleEvent = () => {
               <div className="card-body">
                 <h5 className="card-title">{title}</h5>
                 <div className="mb-2 mt-2">
+                  {" "}
                   <i className="card-text">
                     <p style={{ fontSize: "14px", color: "green" }}>{`Hosted by ${event.data.user.userName}`}</p>
                   </i>

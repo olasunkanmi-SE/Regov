@@ -8,6 +8,7 @@ import { Event } from "./pages/Event";
 import { useEffect } from "react";
 import { useAuth } from "./hooks/useAuth";
 import { SingleEvent } from "./pages/SingleEvent";
+import { EventDraft } from "./pages/Draft";
 
 function App() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/events" element={<Event />} />
                   <Route path="/events/:id" element={<SingleEvent />} />
+                  <Route path="/events/drafts" element={<EventDraft />} />
                   <Route path="*" element={<Navigate to=".." />} />
                 </Route>
               </Routes>

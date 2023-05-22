@@ -34,3 +34,7 @@ export interface IapiResponse {
   code: number;
   message: string;
 }
+
+export interface IUpdateEvent extends Partial<ICreateEvent> {
+  id: string;
+}

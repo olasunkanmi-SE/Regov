@@ -1,3 +1,5 @@
+import { IapiResponse } from "./event.interface";
+
 export interface IEventReview {
   content: string;
   user: string;
@@ -12,6 +14,10 @@ export interface IEventReviewResponse {
   userName?: string;
 }
 
-export interface IEventReviewsResponse {
+export interface IReviewsResponse extends IapiResponse {
+  data: IEventReviewResponse[];
+}
+
+export interface IEventReviewsResponse extends IapiResponse {
   data: IEventReviewResponse[];
 }

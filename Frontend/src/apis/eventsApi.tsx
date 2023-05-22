@@ -7,6 +7,11 @@ export const GetEvents = async (): Promise<IEventsResponse> => {
   return response.data;
 };
 
+export const GetDraftEvents = async (): Promise<IEventsResponse> => {
+  const response = await eventApi.get("/events/drafts");
+  return response.data;
+};
+
 export const CreateEvent = async (event: ICreateEvent): Promise<IEventResponse> => {
   const response = await eventApi.post("/events", event);
   return response.data;
