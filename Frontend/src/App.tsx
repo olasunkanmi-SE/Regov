@@ -1,12 +1,27 @@
 import { Col, Container, Row } from "react-bootstrap";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { NavBar } from "./components/NavBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { Event } from "./pages/Event";
+import { useEffect } from "react";
+import { useAuth } from "./hooks/useAuth";
+import { SingleEvent } from "./pages/SingleEvent";
+import { EventDraft } from "./pages/Draft";
 
 function App() {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const redirectTimeout = setTimeout(() => {
+        navigate("/events");
+      }, 500);
+      return () => clearTimeout(redirectTimeout);
+    }
+  }, [navigate]);
   return (
     <AuthProvider>
       <div>
@@ -19,6 +34,8 @@ function App() {
                   <Route path="/register" element={<Register />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/events" element={<Event />} />
+                  <Route path="/events/:id" element={<SingleEvent />} />
+                  <Route path="/events/drafts" element={<EventDraft />} />
                   <Route path="*" element={<Navigate to=".." />} />
                 </Route>
               </Routes>

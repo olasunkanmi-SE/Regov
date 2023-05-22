@@ -1,5 +1,5 @@
 import { HydratedDocument } from "mongoose";
-import { IReview, Review } from "../models";
+import { Event, IReview, Review } from "../models";
 import { EventService } from "./event-service";
 import { UserService } from "./user-service";
 import { IEventReview } from "../interfaces/create-review-interface";
@@ -22,7 +22,7 @@ export class ReviewService {
             createdBy: existingUser.email,
             createdDateTime: new Date().toISOString(),
           };
-          review = new Review({ content, user, event, rate });
+          review = new Review({ content, user, event, rate, userName: existingUser.toJSON().userName });
           existingEvent.ratings.push(rate);
           await EventService.updateEvent(
             event,
@@ -38,8 +38,12 @@ export class ReviewService {
       if (!createdReview) {
         throw new HttpException(HTTP_RESPONSE_CODE.NOT_FOUND, APP_ERROR_MESSAGE.serverError);
       }
-      return createdReview;
+      return { ...createdReview };
     }
+  }
+
+  static async getEventReviews(id: string) {
+    return await Review.find({}).where({ event: id });
   }
   static async getReviews() {
     const reviews: HydratedDocument<IReview>[] = await Review.find();

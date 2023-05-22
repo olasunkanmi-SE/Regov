@@ -66,3 +66,36 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.loading-skeleton {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.rectangular-div {
+  width: 30%;
+  height: 100px;
+  margin-bottom: 10px;
+  background-color: #e6e6e6;
+  animation: fade-in 1s ease-in-out forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.form {
+  height: 100px;
+  width: 100%;
+  background-color: #fff;
+  border-color: #e0dede;
+  border-radius: 7px;
+  color: #000;
+}

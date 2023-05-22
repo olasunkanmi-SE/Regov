@@ -6,27 +6,35 @@ export interface ICreateEvent {
   type: string;
 }
 
-export interface IEventResponse extends IEvent, IapiResponse {}
+export interface IEventsResponse extends IapiResponse {
+  data: IEvent[];
+}
+
+export interface IEventResponse extends IapiResponse {
+  data: IEvent;
+}
 
 export interface IEvent {
-  data: {
-    _id: string;
-    userId: string;
-    user: IUser;
-    content: string;
-    ratings: string[];
-    title: string;
-    type: string;
-    averageRate: string;
-    createdDateTime: string;
-    createdBy: string;
-    modifiedBy: string;
-    modifiedDateTime: string;
-  };
+  _id: string;
+  userId: string;
+  user: IUser;
+  content: string;
+  ratings: string[];
+  title: string;
+  type: string;
+  averageRate: string;
+  createdDateTime: string;
+  createdBy: string;
+  modifiedBy: string;
+  modifiedDateTime: string;
 }
 
 export interface IapiResponse {
   success: boolean;
   code: number;
   message: string;
+}
+
+export interface IUpdateEvent extends Partial<ICreateEvent> {
+  id: string;
 }

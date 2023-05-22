@@ -24,8 +24,8 @@ const QueryUserItem = async (id: string): Promise<IUserResponse> => {
 
 export const GetUserById = (id: string): QueryObserverResult<IUserResponse> => {
   return useQuery<IUserResponse, Error>(["user", id], async () => QueryUserItem(id), {
-    staleTime: 1000000,
-    cacheTime: 1000000,
+    staleTime: 10000,
+    cacheTime: 10000,
     onSuccess: (res) => {
       return {
         data: res.data,

@@ -3,7 +3,10 @@ import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export const NavBar = () => {
-  const { isAuthenticated, currentUser } = useAuth();
+  const { isAuthenticated, currentUser, logOut } = useAuth();
+  const handleLogOut = () => {
+    return logOut();
+  };
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -13,6 +16,9 @@ export const NavBar = () => {
           </Navbar.Brand>
           <Nav className="me-auto"></Nav>
           <Stack gap={3} direction="horizontal">
+            <Nav.Link to="/events/drafts" as={NavLink}>
+              Drafts
+            </Nav.Link>
             {!isAuthenticated ? (
               <Nav.Link to="/register" className="ms-auto" href="#home" as={NavLink}>
                 Register
@@ -29,9 +35,8 @@ export const NavBar = () => {
             )}
             {isAuthenticated ? (
               <NavDropdown title={currentUser?.userName} id="basic-nav-dropdown">
-                <NavDropdown.Item href="">Drafts</NavDropdown.Item>
                 <NavDropdown.Item href="">Events</NavDropdown.Item>
-                <NavDropdown.Item href="">Log out</NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogOut}>Log out</NavDropdown.Item>
               </NavDropdown>
             ) : (
               ""

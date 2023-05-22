@@ -22,6 +22,9 @@ export const useAxiosPrivate = () => {
         if (error.response.status === 401) {
           logOut();
         }
+        if (error.response.status === 403) {
+          logOut();
+        }
         return Promise.reject(error);
       }
     );

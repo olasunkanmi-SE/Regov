@@ -2,6 +2,7 @@ import express from "express";
 import * as bodyParser from "body-parser";
 import mongoose from "mongoose";
 import errorMiddleware from "./middlewares/error.middleware";
+import cors from "cors";
 
 export class App {
   public app: express.Application;
@@ -9,7 +10,7 @@ export class App {
 
   constructor(controllers: unknown, port: number) {
     this.app = express();
-    this.cors();
+    this.corsMiddleWares();
     this.port = port;
     this.connectDB();
     this.initMiddleWares();
@@ -35,13 +36,18 @@ export class App {
     this.app.use(bodyParser.json());
   }
 
-  private cors() {
-    this.app.use(function (req, res, next) {
-      res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      next();
-    });
+  private corsMiddleWares() {
+    this.app.use(cors());
   }
+
+  // private cors() {
+  //   this.app.use(function (req, res, next) {
+  //     res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  //     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  //     next();
+  //   });
+  // }
 
   private intializeErrorHandling() {
     this.app.use(errorMiddleware);

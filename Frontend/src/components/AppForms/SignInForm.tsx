@@ -32,7 +32,9 @@ export const LoginForm = () => {
 
   const onSubmit: SubmitHandler<validationSchema> = (data) => {
     login(data);
-    navigate("/events");
+    if (isAuthenticated) {
+      navigate("/events");
+    }
   };
 
   return (
