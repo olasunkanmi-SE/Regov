@@ -1,5 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { NavBar } from "./components/NavBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Login } from "./pages/Login";
@@ -39,6 +39,11 @@ function App() {
                   <Route path="*" element={<Navigate to=".." />} />
                 </Route>
               </Routes>
+              <div style={{ marginTop: "20px" }}>
+                <Link to="/events">
+                  <button>Welcome Go to Events</button>
+                </Link>
+              </div>
             </Col>
             <Col md={3}></Col>
           </Row>
