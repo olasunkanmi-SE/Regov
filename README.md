@@ -30,7 +30,3 @@ VITE_SECRET: This is required for encrypting the localstorage data.
 To bootstrap the frontend App. npm run start:dev
 
 ![uml](https://github.com/olasunkanmi-SE/Regov/assets/60177090/b244d736-b4fd-4203-b6e0-6d8c5f9617a6)
-
-Missing Requirements:
-- Role based authorization
-- Unit test
